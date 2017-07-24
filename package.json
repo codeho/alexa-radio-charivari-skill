@@ -23,11 +23,11 @@
   },
   "homepage": "https://github.com/Pindar/alexa-radio-charivari-skill#readme",
   "dependencies": {
-    "alexa-sdk": "^1.0.11",
-    "serverless": "^1.18.0"
+    "alexa-sdk": "^1.0.11"
   },
   "devDependencies": {
     "eslint": "^4.3.0",
-    "eslint-plugin-import": "^2.7.0"
+    "eslint-plugin-import": "^2.7.0",
+    "serverless": "^1.18.0"
   }
 }

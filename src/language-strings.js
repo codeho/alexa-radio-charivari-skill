@@ -9,9 +9,11 @@ module.exports =  {
         WELCOME: 'Willkommen zu Charivari Rosenheim, dem inoffiziellen Skill. Sage enfach spiele das wichtigste auf bayrisch, um die Neuigkeiten auf bayrisch zu hören.'
       },
       GOOD_BYE: 'Bis zum nächsten mal, servus!',
-      UNHANDLED: 'Entschuldige, ich konnte dich nicht verstehen.',
+      UNHANDLED: 'Entschuldige, ich konnte dich nicht verstehen. Du kannst immer nach Hilfe fragen.',
       NO_SHUFFLE: 'Es tut mir Leid, aber du kannst die Nachrichten nicht zufällig abspielen lassen.',
-      NO_LOOP: 'Auch wenn wir verstehen, dass es Dich sehr interessierst: aber du kannst Dir die Nachrichten nicht in Dauerschleife anhören.'
+      NO_LOOP: 'Auch wenn wir verstehen, dass es Dich sehr interessierst: aber du kannst Dir die Nachrichten nicht in Dauerschleife anhören.',
+      NEXT: 'Entschuldige, aber du kannst die Nachrichten nicht einzeln durchgehen.',
+      PREVIOUS: 'Entschuldige, aber du kannst die Nachrichten nicht einzeln durchgehen.'
     }
   }
 };

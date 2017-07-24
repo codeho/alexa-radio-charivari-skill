@@ -4,16 +4,10 @@ const constants = require('./constants');
 
 var stateHandlers = {
   startModeIntentHandlers : Alexa.CreateStateHandler(constants.states.START_MODE, {
-    /*
-    *  All Intent Handlers for state : START_MODE
-    */
-    'LaunchRequest' : function () {
+    'LaunchRequest': function () {
       // Initialize Attributes
-      this.attributes['playOrder'] = Array.apply(null, {length: audioData.length}).map(Number.call, Number);
       this.attributes['index'] = 0;
       this.attributes['offsetInMilliseconds'] = 0;
-      this.attributes['loop'] = true;
-      this.attributes['shuffle'] = false;
       this.attributes['playbackIndexChanged'] = true;
       //  Change state to START_MODE
       this.handler.state = constants.states.START_MODE;
@@ -24,70 +18,195 @@ var stateHandlers = {
       this.response.speak(message).listen(reprompt);
       this.emit(':responseReady');
     },
-    'PlayNewsBoarischIntent' : function() {
+    'PlayNewsBoarischIntent': function() {
       this.attributes['index'] = 0;
       this.emit('PlayAudio');
     },
-    'PlayNewsRosenheimRegionIntent' : function() {
+    'PlayNewsRosenheimRegionIntent': function() {
       this.attributes['index'] = 1;
       this.emit('PlayAudio');
     },
-    'PlayAudio' : function () {
-      if (!this.attributes['playOrder']) {
+    'PlayAudio': function () {
+      if (!this.attributes['offsetInMilliseconds']) {
         // Initialize Attributes if undefined.
-        this.attributes['playOrder'] = Array.apply(null, {length: audioData.length}).map(Number.call, Number);
         this.attributes['offsetInMilliseconds'] = 0;
-        this.attributes['loop'] = true;
-        this.attributes['shuffle'] = false;
         this.attributes['playbackIndexChanged'] = true;
         //  Change state to START_MODE
         this.handler.state = constants.states.START_MODE;
       }
       controller.play.call(this);
     },
-    'AMAZON.HelpIntent' : function () {
+    'AMAZON.HelpIntent': function () {
       var message = this.t('HELP.WELCOME');
       this.response.speak(message).listen(message);
       this.emit(':responseReady');
     },
-    'AMAZON.StopIntent' : function () {
+    'AMAZON.StopIntent': function () {
       var message = this.t('GOOD_BYE');
       this.response.speak(message);
       controller.stop.call(this);
+      this.emit(':responseReady');
     },
-    'AMAZON.CancelIntent' : function () {
+    'AMAZON.CancelIntent': function () {
       var message = this.t('GOOD_BYE');
       this.response.speak(message);
       controller.stop.call(this);
-    },
-    'AMAZON.ShuffleOnIntent' : function () {
-      var message = this.t('NO_SHUFFLE');
-      this.response.speak(message).listen(message);
       this.emit(':responseReady');
     },
-    'AMAZON.ShuffleOffIntent' : function () {
-      var message = this.t('NO_SHUFFLE');
-      this.response.speak(message).listen(message);
+    'AMAZON.LoopOnIntent': function () {
+      var message = this.t('NO_LOOP');
+      this.response.speak(message);
       this.emit(':responseReady');
     },
-    'SessionEndedRequest' : function () {
+    'AMAZON.LoopOffIntent': function () {
+      var message = this.t('NO_LOOP');
+      this.response.speak(message);
+      this.emit(':responseReady');
+    },
+    'AMAZON.NextIntent': function () {
+      var message = this.t('NEXT');
+      this.response.speak(message);
+      this.emit(':responseReady');
+    },
+    'AMAZON.PreviousIntent': function () {
+      var message = this.t('PREVIOUS');
+      this.response.speak(message);
+      this.emit(':responseReady');
+    },
+    'AMAZON.ShuffleOnIntent': function () {
+      var message = this.t('NO_SHUFFLE');
+      this.response.speak(message);
+      this.emit(':responseReady');
+    },
+    'AMAZON.ShuffleOffIntent': function () {
+      var message = this.t('NO_SHUFFLE');
+      this.response.speak(message);
+      this.emit(':responseReady');
+    },
+    'SessionEndedRequest': function () {
       // No session ended logic
     },
-    'Unhandled' : function () {
+    'Unhandled': function () {
+      console.log(`unhandled ${this.handler.state}`);
       var message = this.t('UNHANDLED');
-      this.response.speak(message).listen(message);
+      this.response.speak(message);
       this.emit(':responseReady');
     }
   }),
+
+
+  playModeIntentHandlers : Alexa.CreateStateHandler(constants.states.PLAY_MODE, {
+    /*
+    *  All Intent Handlers for state : PLAY_MODE
+    */
+    'LaunchRequest': function () {
+      this.attributes['offsetInMilliseconds'] = 0;
+      this.handler.state = constants.states.START_MODE;
+
+      var message = this.t('launchRequest.WELCOME');
+      var reprompt = this.t('launchRequest.REPROMT');
+
+      this.response.speak(message).listen(reprompt);
+      this.emit(':responseReady');
+    },
+    'PlayNewsBoarischIntent': function() {
+      console.log(`PlayNewsBoarischIntent ${this.handler.state}`);
+      this.attributes['index'] = 0;
+      this.emit('PlayAudio');
+    },
+    'PlayNewsRosenheimRegionIntent': function() {
+      console.log(`PlayNewsRosenheimRegionIntent ${this.handler.state}`);
+      this.attributes['index'] = 1;
+      this.emit('PlayAudio');
+    },
+    'PlayAudio': function () {
+      controller.play.call(this);
+    },
+    'AMAZON.NextIntent': function () {
+      var message = this.t('NEXT');
+      this.response.speak(message);
+      this.emit(':responseReady');
+    },
+    'AMAZON.PreviousIntent': function () {
+      var message = this.t('PREVIOUS');
+      this.response.speak(message);
+      this.emit(':responseReady');
+    },
+    'AMAZON.PauseIntent': function () {
+      controller.stop.call(this)
+    },
+    'AMAZON.StopIntent': function () {
+      var message = this.t('GOOD_BYE');
+      this.response.speak(message);
+      controller.stop.call(this);
+      this.emit(':responseReady');
+    },
+    'AMAZON.CancelIntent': function () {
+      controller.stop.call(this);
+    },
+    'AMAZON.ResumeIntent': function () {
+      controller.play.call(this);
+    },
+    'AMAZON.LoopOnIntent': function () {
+      var message = this.t('NO_LOOP');
+      this.response.speak(message);
+      this.emit(':responseReady');
+    },
+    'AMAZON.LoopOffIntent': function () {
+      var message = this.t('NO_LOOP');
+      this.response.speak(message);
+      this.emit(':responseReady');
+    },
+    'AMAZON.ShuffleOnIntent': function () {
+      var message = this.t('NO_SHUFFLE');
+      this.response.speak(message);
+      this.emit(':responseReady');
+    },
+    'AMAZON.ShuffleOffIntent': function () {
+      var message = this.t('NO_SHUFFLE');
+      this.response.speak(message);
+      this.emit(':responseReady');
+    },
+    'AMAZON.StartOverIntent': function () {
+      controller.startOver.call(this);
+    },
+    'AMAZON.HelpIntent': function () {
+      // This will called while audio is playing and a user says "ask <invocation_name> for help"
+      var message = this.t('HELP.WELCOME').listen(message);
+      this.response.speak(message);
+      this.emit(':responseReady');
+    },
+    'SessionEndedRequest': function () {
+      // No session ended logic
+    },
+    'Unhandled': function () {
+      console.log(`unhandled ${this.handler.state}`);
+      var message = this.t('UNHANDLED');
+      this.response.speak(message);
+      this.emit(':responseReady');
+    }
+  }),
+
+
   remoteControllerHandlers : Alexa.CreateStateHandler(constants.states.PLAY_MODE, {
     /*
     *  All Requests are received using a Remote Control. Calling corresponding handlers for each of them.
     */
-    'PlayCommandIssued' : function () { controller.play.call(this); },
-    'PauseCommandIssued' : function () { controller.stop.call(this); },
-    'NextCommandIssued' : function () { controller.playNext.call(this); },
-    'PreviousCommandIssued' : function () { controller.playPrevious.call(this); }
-  }),
+    'PlayCommandIssued': function () {
+      controller.play.call(this);
+    },
+    'PauseCommandIssued': function () {
+      controller.stop.call(this);
+    },
+    'NextCommandIssued': function () {
+      this.response.speak(this.t('NEXT'));
+      this.emit(':responseReady');
+    },
+    'PreviousCommandIssued': function () {
+      this.response.speak(this.t('PREVIOUS'));
+      this.emit(':responseReady');
+    }
+  })
 };
 
 module.exports = stateHandlers;
@@ -111,16 +230,16 @@ var controller = function () {
         this.attributes['playbackFinished'] = false;
       }
 
-      var token = String(this.attributes['playOrder'][this.attributes['index']]);
+      var token = String(this.attributes['index']);
       var playBehavior = 'REPLACE_ALL';
-      var podcast = audioData[this.attributes['playOrder'][this.attributes['index']]];
+      var podcast = audioData[[0,1][this.attributes['index']]];
       var offsetInMilliseconds = this.attributes['offsetInMilliseconds'];
       // Since play behavior is REPLACE_ALL, enqueuedToken attribute need to be set to null.
       this.attributes['enqueuedToken'] = null;
 
       if (canThrowCard.call(this)) {
         var cardTitle = `Radio Charivari Rosenheim ${podcast.title}`;
-        var cardContent = `Spiele ${podcast.title}. (c) Charivari Rosenheim.`;
+        var cardContent = `Spiele ${podcast.title}. &copy; Charivari Rosenheim.`;
         this.response.cardRenderer(cardTitle, cardContent, null);
       }
 
@@ -142,7 +261,6 @@ var controller = function () {
     },
     reset: function () {
       // Reset to top of the playlist.
-      this.attributes['index'] = 0;
       this.attributes['offsetInMilliseconds'] = 0;
       this.attributes['playbackIndexChanged'] = true;
       controller.play.call(this);
