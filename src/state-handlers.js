@@ -167,6 +167,10 @@ var stateHandlers = {
       this.response.speak(message);
       this.emit(':responseReady');
     },
+    'AMAZON.RepeatIntent': function () {
+      this.attributes['offsetInMilliseconds'] = 0;
+      this.emit('PlayAudio');
+    },
     'AMAZON.StartOverIntent': function () {
       controller.startOver.call(this);
     },

@@ -6,6 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy": "serverless deploy",
+    "deployprod": "serverless deploy --stage production",
+    "deployprodfunction": "serverless deploy --stage production function -f chariskill",
     "deployfunction": "serverless deploy function -f chariskill",
     "remove": "serverless remove",
     "start": "serverless invoke --function chariskill",
