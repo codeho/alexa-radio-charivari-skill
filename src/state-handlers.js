@@ -176,8 +176,8 @@ var stateHandlers = {
     },
     'AMAZON.HelpIntent': function () {
       // This will called while audio is playing and a user says "ask <invocation_name> for help"
-      var message = this.t('HELP.WELCOME').listen(message);
-      this.response.speak(message);
+      var message = this.t('HELP.WELCOME');
+      this.response.speak(message).listen(message);
       this.emit(':responseReady');
     },
     'SessionEndedRequest': function () {
