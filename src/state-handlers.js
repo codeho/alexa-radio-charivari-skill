@@ -243,7 +243,7 @@ var controller = function () {
 
       if (canThrowCard.call(this)) {
         var cardTitle = `Radio Charivari Rosenheim ${podcast.title}`;
-        var cardContent = `Spiele ${podcast.title}. &copy; Charivari Rosenheim.`;
+        var cardContent = `Spiele ${podcast.title}. (c) Charivari Rosenheim.`;
         this.response.cardRenderer(cardTitle, cardContent, null);
       }
 
