@@ -2,11 +2,11 @@ module.exports =  {
   'de-DE': {
     'translation': {
       launchRequest: {
-        WELCOME: 'Willkommen zu Charivari Rosenheim, dem inoffiziellen Skill. Du kannst Dir entweder das wichtigste auf bayrisch oder die News aus Rosenheim und der Region anhören.',
+        WELCOME: 'Willkommen zu Charivari Rosenheim, dem inoffiziellen Skill. Du kannst Dir entweder das wichtigste auf bayrisch, die News aus Rosenheim und der Region oder den live Stream anhören.',
         REPROMT: 'Du kannst sagen, spiele das wichtigste auf bayrisch, oder die News aus Rosenheim und der Region, um zu beginnen.',
       },
       HELP: {
-        WELCOME: 'Willkommen zu Charivari Rosenheim, dem inoffiziellen Skill. Sage enfach spiele das wichtigste auf bayrisch, um die Neuigkeiten auf bayrisch zu hören.'
+        WELCOME: 'Du kannst Dir entweder das wichtigste auf bayrisch, die News aus Rosenheim und der Region oder den live Stream anhören.'
       },
       GOOD_BYE: 'Bis zum nächsten mal, servus!',
       UNHANDLED: 'Entschuldige, ich konnte dich nicht verstehen. Du kannst immer nach Hilfe fragen.',

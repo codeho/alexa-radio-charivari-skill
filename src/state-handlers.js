@@ -1,14 +1,15 @@
 const Alexa = require('alexa-sdk');
 const audioData = require('./audio-assets');
 const constants = require('./constants');
+const Console = console;
 
 var stateHandlers = {
   startModeIntentHandlers : Alexa.CreateStateHandler(constants.states.START_MODE, {
     'LaunchRequest': function () {
       // Initialize Attributes
-      this.attributes['index'] = 0;
-      this.attributes['offsetInMilliseconds'] = 0;
-      this.attributes['playbackIndexChanged'] = true;
+      this.attributes.index = 0;
+      this.attributes.offsetInMilliseconds = 0;
+      this.attributes.playbackIndexChanged = true;
       //  Change state to START_MODE
       this.handler.state = constants.states.START_MODE;
 
@@ -19,18 +20,22 @@ var stateHandlers = {
       this.emit(':responseReady');
     },
     'PlayNewsBoarischIntent': function() {
-      this.attributes['index'] = 0;
+      this.attributes.index = constants.playMode.NEWS_BAVARION;
       this.emit('PlayAudio');
     },
     'PlayNewsRosenheimRegionIntent': function() {
-      this.attributes['index'] = 1;
+      this.attributes.index = constants.playMode.NEWS_REGIONAL;
+      this.emit('PlayAudio');
+    },
+    'PlayStreamIntent': function() {
+      this.attributes.index = constants.playMode.STREAM;
       this.emit('PlayAudio');
     },
     'PlayAudio': function () {
-      if (!this.attributes['offsetInMilliseconds']) {
+      if (!this.attributes.offsetInMilliseconds) {
         // Initialize Attributes if undefined.
-        this.attributes['offsetInMilliseconds'] = 0;
-        this.attributes['playbackIndexChanged'] = true;
+        this.attributes.offsetInMilliseconds = 0;
+        this.attributes.playbackIndexChanged = true;
         //  Change state to START_MODE
         this.handler.state = constants.states.START_MODE;
       }
@@ -87,7 +92,7 @@ var stateHandlers = {
       // No session ended logic
     },
     'Unhandled': function () {
-      console.log(`unhandled ${this.handler.state}`);
+      Console.log(`unhandled ${this.handler.state}`);
       var message = this.t('UNHANDLED');
       this.response.speak(message);
       this.emit(':responseReady');
@@ -110,13 +115,15 @@ var stateHandlers = {
       this.emit(':responseReady');
     },
     'PlayNewsBoarischIntent': function() {
-      console.log(`PlayNewsBoarischIntent ${this.handler.state}`);
-      this.attributes['index'] = 0;
+      this.attributes.index = constants.playMode.NEWS_BAVARION;
       this.emit('PlayAudio');
     },
     'PlayNewsRosenheimRegionIntent': function() {
-      console.log(`PlayNewsRosenheimRegionIntent ${this.handler.state}`);
-      this.attributes['index'] = 1;
+      this.attributes.index = constants.playMode.NEWS_REGIONAL;
+      this.emit('PlayAudio');
+    },
+    'PlayStreamIntent': function() {
+      this.attributes.index = constants.playMode.STREAM;
       this.emit('PlayAudio');
     },
     'PlayAudio': function () {
@@ -133,7 +140,7 @@ var stateHandlers = {
       this.emit(':responseReady');
     },
     'AMAZON.PauseIntent': function () {
-      controller.stop.call(this)
+      controller.stop.call(this);
     },
     'AMAZON.StopIntent': function () {
       var message = this.t('GOOD_BYE');
@@ -184,7 +191,7 @@ var stateHandlers = {
       // No session ended logic
     },
     'Unhandled': function () {
-      console.log(`unhandled ${this.handler.state}`);
+      Console.log(`unhandled ${this.handler.state}`);
       var message = this.t('UNHANDLED');
       this.response.speak(message);
       this.emit(':responseReady');
@@ -234,10 +241,10 @@ var controller = function () {
         this.attributes['playbackFinished'] = false;
       }
 
-      var token = String(this.attributes['index']);
+      var token = String(this.attributes.index);
       var playBehavior = 'REPLACE_ALL';
-      var podcast = audioData[[0,1][this.attributes['index']]];
-      var offsetInMilliseconds = this.attributes['offsetInMilliseconds'];
+      var podcast = audioData[this.attributes.index];
+      var offsetInMilliseconds = (this.attributes.index !== 2) ? this.attributes['offsetInMilliseconds'] : 0;
       // Since play behavior is REPLACE_ALL, enqueuedToken attribute need to be set to null.
       this.attributes['enqueuedToken'] = null;
 

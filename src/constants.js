@@ -4,5 +4,10 @@ module.exports = Object.freeze({
   states: {
     START_MODE : '',
     PLAY_MODE : '_PLAY_MODE'
+  },
+  playMode: {
+    NEWS_BAVARION: 0,
+    NEWS_REGIONAL: 1,
+    STREAM: 2
   }
 });
